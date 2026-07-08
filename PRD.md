@@ -3,10 +3,10 @@
 
 
 
-1. Descripción del Proyecto
+1. Descripción del Proyecto <br>
 
 
-el Señor Alexander quiere mejorar su condición física sin salir de casa, pero no sabe qué ejercicios realizar ni cómo organizar sus entrenamientos. Actualmente intenta hacer ejercicio viendo videos en internet, pero no lleva un control de lo que hace, se desmotiva fácilmente y abandona las rutinas.
+el Señor Alexander quiere mejorar su condición física sin salir de casa, pero no sabe qué ejercicios realizar ni cómo organizar sus entrenamientos. Actualmente intenta hacer ejercicio viendo videos en internet, pero no lleva un control de lo que hace, se desmotiva fácilmente y abandona las rutinas. <br>
 
 
 El sistema debe permitir: <br>
@@ -19,77 +19,31 @@ El sistema debe permitir: <br>
 
 
 
-USUARIO (Entrenante)
-
-
-Realiza ejercicios en casa: selecciona rutinas, completa ejercicios y registra su progreso
+USUARIO (Entrenante) <br>
 
 
 
-
-ENTRENADOR (Aplicación)
-
-
-Proporciona rutinas, guía los ejercicios y organiza el entrenamiento
-
-
-
-
-ADMINISTRADOR
-
-
-Gestiona los ejercicios, rutinas y contenido del sistema
+Realiza ejercicios en casa: selecciona rutinas, completa ejercicios y registra su progreso <br>
 
 
 
 
 
+ENTRENADOR (Aplicación) <br>
+
+
+
+Proporciona rutinas, guía los ejercicios y organiza el entrenamiento <br>
 
 
 
 
 
-2. Requisitos Funcionales (¿Qué debe hacer?)
-El sistema DEBE permitir:
-
-
-• Registrar un usuario: nombre, edad, nivel físico
-• Mostrar rutinas según el nivel del usuario
-• Iniciar una rutina con lista de ejercicios paso a paso
-• Registrar cada ejercicio realizado: repeticiones y tiempo
-• Guardar el historial de entrenamientos del usuario
-• Mostrar resumen del progreso (días entrenados, rutinas completadas)
+ADMINISTRADOR <br>
 
 
 
-
-
-
-
-
-3. Requisitos No Funcionales (¿Cómo debe funcionar?)
-• Fácil de usar: cualquier persona sin experiencia debe entenderla
-• Rápido: iniciar una rutina en menos de 3 segundos
-• Seguro: la información no se pierde al cerrar la aplicación
-• Confiable: los datos se guardan correctamente sin errores
-• Atractivo: interfaz visual que motive al usuario a entrenar
-
-
-
-
-
-
-
-
-
-
-4. Casos de Uso (Escenarios reales)
-Caso 1: Inicio de entrenamiento
-El usuario selecciona: “Rutina nivel principiante”. El sistema muestra una lista de ejercicios (sentadillas, flexiones, abdominales) y guía el entrenamiento paso a paso.
-
-
-Caso 2: Registro de progreso
-El usuario completa la rutina y registra: “20 sentadillas, 15 flexiones, 10 minutos de cardio”. El sistema guarda esta información como entrenamiento del día.
+Gestiona los ejercicios, rutinas y contenido del sistema <br>
 
 
 
@@ -101,20 +55,94 @@ El usuario completa la rutina y registra: “20 sentadillas, 15 flexiones, 10 mi
 
 
 
+2. Requisitos Funcionales (¿Qué debe hacer?)<br>
+
+El sistema DEBE permitir: <br>
 
 
 
-5. Datos principales
-Qué información guardaremos:
+• Registrar un usuario: nombre, edad, nivel físico <br>
+
+• Mostrar rutinas según el nivel del usuario <br>
+
+• Iniciar una rutina con lista de ejercicios paso a paso <br>
+
+• Registrar cada ejercicio realizado: repeticiones y tiempo <br>
+
+• Guardar el historial de entrenamientos del usuario <br>
+
+• Mostrar resumen del progreso (días entrenados, rutinas completadas) <br>
 
 
-DATO            TIPO        EJEMPLO
-Usuario         Texto       "Laura Gómez"
-Edad            Número      30
-Nivel           Opciones    Intermedio
-Ejercicio       Texto       "Flexiones"
-Repeticiones    Número      15
-Tiempo          Número      20 min
+
+
+
+
+
+
+
+3. Requisitos No Funcionales (¿Cómo debe funcionar?) <br>
+
+• Fácil de usar: cualquier persona sin experiencia debe entenderla <br>
+
+• Rápido: iniciar una rutina en menos de 3 segundos<br>
+
+• Seguro: la información no se pierde al cerrar la aplicación <br>
+
+• Confiable: los datos se guardan correctamente sin errores <br>
+
+• Atractivo: interfaz visual que motive al usuario a entrenar <br>
+
+
+
+
+
+
+
+
+
+
+
+4. Casos de Uso (Escenarios reales) <br>
+
+Caso 1: Inicio de entrenamiento <br>
+
+El usuario selecciona: “Rutina nivel principiante”. El sistema muestra una lista de ejercicios (sentadillas, flexiones, abdominales) y guía el entrenamiento paso a paso. <br>
+
+
+
+Caso 2: Registro de progreso <br>
+
+El usuario completa la rutina y registra: “20 sentadillas, 15 flexiones, 10 minutos de cardio”. El sistema guarda esta información como entrenamiento del día. <br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+5. Datos principales<br>
+Qué información guardaremos: <br>
+
+
+DATO         -     TIPO       -      EJEMPLO   <br>    
+Usuario      -     Texto      -      "Laura Gomez" <br>
+Edad         -     Numero     -      18             <br>
+Nivel        -     Opciones   -      Intermedio     <br>
+Ejercicio    -     Texto      -      Flexiones       <br>
+Repeticiones -     Numero     -      15              <br>
+Tiempo       -     Numero     -      20 Min           <br>
+
+
+
 
 
 
@@ -126,13 +154,13 @@ Tiempo          Número      20 min
 
 
 
-6. Criterios de Éxito (¿Cómo sabemos que funciona?)
-•  Se puede registrar un usuario sin errores
-•  Se puede iniciar y completar una rutina
-•  El sistema guarda correctamente el progreso
-•  Se pueden consultar entrenamientos anteriores
-•  La información se mantiene al cerrar y abrir la app
-•  El usuario puede usar la app durante varios días sin fallos
+6. Criterios de Éxito (¿Cómo sabemos que funciona?) <br>
+•  Se puede registrar un usuario sin errores <br>
+•  Se puede iniciar y completar una rutina <br>
+•  El sistema guarda correctamente el progreso <br>
+•  Se pueden consultar entrenamientos anteriores <br>
+•  La información se mantiene al cerrar y abrir la app <br>
+•  El usuario puede usar la app durante varios días sin fallos <br>
 
 
 
@@ -141,6 +169,6 @@ Tiempo          Número      20 min
 
 
 
-7. Limitaciones (¿Qué NO hace?)
-• NO incluye entrenadores personales en tiempo real
-• NO genera planes de alimentación o dietas
+7. Limitaciones (¿Qué NO hace?) <br>
+• NO incluye entrenadores personales en tiempo real <br>
+• NO genera planes de alimentación o dietas <br>
