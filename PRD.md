@@ -50,7 +50,9 @@ Gestiona los ejercicios, rutinas y contenido del sistema <br>
 
 
 
-
+<br>
+<br>
+<br>
 
 
 
@@ -76,7 +78,9 @@ El sistema DEBE permitir: <br>
 
 
 
-
+<br>
+<br>
+<br>
 
 
 
@@ -98,7 +102,9 @@ El sistema DEBE permitir: <br>
 
 
 
-
+<br>
+<br>
+<br>
 
 
 
@@ -120,7 +126,9 @@ El usuario completa la rutina y registra: “20 sentadillas, 15 flexiones, 10 mi
 
 
 
-
+<br>
+<br>
+<br>
 
 
 
@@ -133,7 +141,7 @@ El usuario completa la rutina y registra: “20 sentadillas, 15 flexiones, 10 mi
 Qué información guardaremos: <br>
 
 
-DATO         -     TIPO       -      EJEMPLO   <br>    
+DATO         -     TIPO       -      EJEMPLO        <br>    
 Usuario      -     Texto      -      "Laura Gomez" <br>
 Edad         -     Numero     -      18             <br>
 Nivel        -     Opciones   -      Intermedio     <br>
@@ -144,7 +152,9 @@ Tiempo       -     Numero     -      20 Min           <br>
 
 
 
-
+<br>
+<br>
+<br>
 
 
 
@@ -166,7 +176,9 @@ Tiempo       -     Numero     -      20 Min           <br>
 
 
 
-
+<br>
+<br>
+<br>
 
 
 7. Limitaciones (¿Qué NO hace?) <br>
