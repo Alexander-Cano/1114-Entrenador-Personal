@@ -9,12 +9,12 @@
 el Señor Alexander quiere mejorar su condición física sin salir de casa, pero no sabe qué ejercicios realizar ni cómo organizar sus entrenamientos. Actualmente intenta hacer ejercicio viendo videos en internet, pero no lleva un control de lo que hace, se desmotiva fácilmente y abandona las rutinas.
 
 
-El sistema debe permitir:
-• Mostrar rutinas de ejercicio organizadas por nivel (principiante, intermedio, avanzado)
-• Guiar al usuario paso a paso durante cada entrenamiento
-• Registrar los ejercicios realizados (repeticiones, tiempo)
-• Llevar control del progreso diario del usuario
-• Enviar recordatorios para mantener la constancia
+El sistema debe permitir: <br>
+• Mostrar rutinas de ejercicio organizadas por nivel (principiante, intermedio, avanzado) <br>
+• Guiar al usuario paso a paso durante cada entrenamiento <br>
+• Registrar los ejercicios realizados (repeticiones, tiempo) <br>
+• Llevar control del progreso diario del usuario <br>
+• Enviar recordatorios para mantener la constancia <br>
 
 
 
