@@ -1,0 +1,26 @@
+body{
+    margin: 0;
+
+}
+
+
+.contenedor{
+    max-width: 390px;
+    background: linear-gradient(to right,red,black);
+    min-height: 100vh;
+    padding: 20px;
+    margin: auto;
+}
+
+
+.menu{
+    position: relative;
+    width: 400px;
+    height: 700px;
+    background: var(--primary-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: 0 15px 25px rgb(0, 0, 0,0.2);
+}

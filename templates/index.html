@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static'), filename='estlos.css'}}">
+    
+    <title>Entrenador personal</title>
+</head>
+<body>
+    
+</body>
+
+<div class="contenedor">
+
+    <h1>Mis rutinas</h1>
+    {% for rutina in rutina %}
+    <div>
+        <h3>{{rutina.nombre}}</h3>
+        <p>Ejercicios:{{rutina.ejercicios}}</p>
+    </div>
+    {% endfor %}
+
+
+    <nav class="menu">
+        <a href="">Home</a>
+        <a href="">Plan</a>
+        <a href="">Stat</a>
+        <a href="">Login</a>
+      
+
+    </nav>
+</div>
+</html>
