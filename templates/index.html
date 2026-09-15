@@ -1,34 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{url_for('static'), filename='estlos.css'}}">
-    
+    <script src="app.js"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <link rel="stylesheet" href="../estilos/index.css">
+
     <title>Entrenador personal</title>
 </head>
+
 <body>
-    
+  <main class="app">
+    <header class="top">
+      <div class="brand"><span class="brand-mark"></span>KINESIS</div>
+      <div class="profile"><img alt="Foto de perfil" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"></div>
+    </header>
+    <section class="greeting"><p class="eyebrow" id="todayLabel">Cargando tu plan...</p><h1>Hola, <span id="userName">Valeria</span> 👋<br>¿lista para moverte?</h1></section>
+    <section class="hero">
+      <span class="hero-label">Entrenamiento de hoy</span>
+      <h2 id="workoutTitle">Fuerza de cuerpo completo</h2>
+      <p id="workoutMeta">35 min · Nivel intermedio</p>
+      <button class="start" id="startBtn"><span class="play">▶</span> Comenzar</button>
+    </section>
+    <section>
+      <div class="section-head"><h2>Tu semana</h2><button id="calendarBtn">Calendario</button></div>
+      <div class="week" id="weekDays"></div>
+    </section>
+    <section>
+      <div class="section-head"><h2>Progreso</h2><button>Ver detalle</button></div>
+      <div class="summary">
+        <article class="stat"><span class="icon">🔥</span><b id="streak">0 días</b><small>racha actual</small></article>
+        <article class="stat"><span class="icon">⚡</span><b id="minutes">0 min</b><small>esta semana</small></article>
+      </div>
+    </section>
+    <section>
+      <div class="section-head"><h2>Continúa donde lo dejaste</h2></div>
+      <article class="routine"><div class="routine-icon">🧘</div><div class="routine-copy"><b id="continueTitle">Movilidad para corredores</b><span id="continueMeta">8 de 12 minutos completados</span></div><button class="more" aria-label="Más opciones">•••</button></article>
+    </section>
+  </main>
+  <nav aria-label="Navegación principal">
+    <button class="nav-item active"><span class="nav-icon">⌂</span><span>Inicio</span></button><button class="nav-item"><span class="nav-icon">◉</span><span>Entrena</span></button><button class="nav-item"><span class="nav-icon">▥</span><span>Progreso</span></button><button class="nav-item"><span class="nav-icon">◌</span><span>Perfil</span></button>
+  </nav>
+  <div class="toast" id="toast" role="status"></div>
+  <script>
+    const toast = document.getElementById('toast'); let timer, dashboard;
+    const show = message => { toast.textContent=message; toast.classList.add('show'); clearTimeout(timer); timer=setTimeout(()=>toast.classList.remove('show'),2400); };
+    async function loadDashboard() {
+      const response = await fetch('/api/dashboard'); dashboard = await response.json();
+      const d = dashboard;
+      document.getElementById('userName').textContent = d.user.name;
+      document.getElementById('todayLabel').textContent = d.today_label;
+      document.getElementById('workoutTitle').textContent = d.today_workout.title;
+      document.getElementById('workoutMeta').textContent = `${d.today_workout.duration} min · ${d.today_workout.level}`;
+      document.getElementById('streak').textContent = `${d.stats.streak} días`;
+      document.getElementById('minutes').textContent = `${d.stats.week_minutes} min`;
+      document.getElementById('continueTitle').textContent = d.continue_workout.title;
+      document.getElementById('continueMeta').textContent = `${d.continue_workout.progress} de ${d.continue_workout.duration} minutos completados`;
+      document.getElementById('weekDays').innerHTML = d.week.map(day => `<button class="day ${day.active ? 'active' : ''}" data-date="${day.date}"><span>${day.name}</span><strong>${day.number}</strong></button>`).join('');
+    }
+    document.getElementById('startBtn').addEventListener('click',async()=>{ const res=await fetch('/api/workouts/today/start',{method:'POST'}); const data=await res.json(); show(data.message); loadDashboard(); });
+    document.getElementById('calendarBtn').addEventListener('click',()=>show('Calendario de septiembre abierto.'));
+    document.getElementById('weekDays').addEventListener('click',event=>{ const day=event.target.closest('.day'); if(!day) return; document.querySelector('.day.active')?.classList.remove('active'); day.classList.add('active'); show(`Plan para ${day.innerText.replace('\n',' ')} seleccionado.`); });
+    document.querySelectorAll('.nav-item').forEach(item=>item.addEventListener('click',()=>{document.querySelector('.nav-item.active').classList.remove('active'); item.classList.add('active'); show(`${item.innerText} seleccionado`)}));
+    loadDashboard().catch(()=>show('Inicia la app con Python para conectar la base de datos.'));
+  </script>
 </body>
-
-<div class="contenedor">
-
-    <h1>Mis rutinas</h1>
-    {% for rutina in rutina %}
-    <div>
-        <h3>{{rutina.nombre}}</h3>
-        <p>Ejercicios:{{rutina.ejercicios}}</p>
-    </div>
-    {% endfor %}
-
-
-    <nav class="menu">
-        <a href="">Home</a>
-        <a href="">Plan</a>
-        <a href="">Stat</a>
-        <a href="">Login</a>
-      
-
-    </nav>
-</div>
 </html>
