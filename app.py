@@ -1,12 +1,23 @@
 from datetime import date, timedelta
 from pathlib import Path
 import sqlite3
+from flask import Flask, Response, redirect, send_from_directory, url_for, request, session, render_template
+from werkzeug.security import generate_password_hash, check_password_hash
 
-from flask import Flask, jsonify, send_from_directory
+from flask import Flask, Response, redirect, send_from_directory, url_for
 
+# Carpetas del proyecto
 ROOT = Path(__file__).resolve().parent
+TEMPLATES = ROOT / "templates"
+ESTILOS = ROOT / "estilos"
+IMG = ROOT / "IMG"
+
+# Base de datos
 DATABASE = ROOT / "ritmo.db"
+
 app = Flask(__name__)
+
+app.secret_key = "kenesis-clave-secreta"
 
 
 def db():
@@ -19,70 +30,197 @@ def initialize_database():
     with db() as connection:
         connection.executescript("""
             CREATE TABLE IF NOT EXISTS users (
-                id INTEGER PRIMARY KEY, name TEXT NOT NULL
+                id INTEGER PRIMARY KEY,
+                name TEXT NOT NULL
             );
+
             CREATE TABLE IF NOT EXISTS workouts (
-                id INTEGER PRIMARY KEY, title TEXT NOT NULL, duration INTEGER NOT NULL,
-                level TEXT NOT NULL, icon TEXT NOT NULL
+                id INTEGER PRIMARY KEY,
+                title TEXT NOT NULL,
+                duration INTEGER NOT NULL,
+                level TEXT NOT NULL,
+                icon TEXT NOT NULL
             );
+
             CREATE TABLE IF NOT EXISTS workout_log (
-                id INTEGER PRIMARY KEY, workout_id INTEGER NOT NULL, completed_on TEXT NOT NULL,
-                minutes INTEGER NOT NULL DEFAULT 0, progress INTEGER NOT NULL DEFAULT 0,
+                id INTEGER PRIMARY KEY,
+                workout_id INTEGER NOT NULL,
+                completed_on TEXT NOT NULL,
+                minutes INTEGER NOT NULL DEFAULT 0,
+                progress INTEGER NOT NULL DEFAULT 0,
                 FOREIGN KEY(workout_id) REFERENCES workouts(id)
             );
+                CREATE TABLE IF NOT EXISTS accounts (
+        id INTEGER PRIMARY KEY,
+        name TEXT NOT NULL,
+        email TEXT UNIQUE NOT NULL,
+        password TEXT NOT NULL
+    )
         """)
-        if not connection.execute("SELECT 1 FROM users").fetchone():
-            connection.execute("INSERT INTO users (name) VALUES (?)", ("Valeria",))
-            connection.executemany(
-                "INSERT INTO workouts (title, duration, level, icon) VALUES (?, ?, ?, ?)",
-                [("Fuerza de cuerpo completo", 35, "Nivel intermedio", "🏋️"),
-                 ("Movilidad para corredores", 12, "Nivel suave", "🧘")],
+
+        user_exists = connection.execute(
+            "SELECT 1 FROM users"
+        ).fetchone()
+
+        if not user_exists:
+            connection.execute(
+                "INSERT INTO users (name) VALUES (?)",
+                ("Valeria",)
             )
-            today = date.today()
+
             connection.executemany(
-                "INSERT INTO workout_log (workout_id, completed_on, minutes, progress) VALUES (?, ?, ?, ?)",
-                [(1, (today - timedelta(days=1)).isoformat(), 35, 35),
-                 (1, (today - timedelta(days=2)).isoformat(), 35, 35),
-                 (1, (today - timedelta(days=3)).isoformat(), 35, 35),
-                 (2, today.isoformat(), 0, 8)],
+                """
+                INSERT INTO workouts
+                (title, duration, level, icon)
+                VALUES (?, ?, ?, ?)
+                """,
+                [
+                    (
+                        "Fuerza de cuerpo completo",
+                        35,
+                        "Nivel intermedio",
+                        "🏋️"
+                    ),
+                    (
+                        "Movilidad para corredores",
+                        12,
+                        "Nivel suave",
+                        "🧘"
+                    )
+                ]
             )
 
 
 @app.get("/")
 def home():
-    return send_from_directory(ROOT, "index.html")
+    if "user_id" not in session:
+        return redirect(url_for("login"))
 
-
-@app.get("/api/dashboard")
-def dashboard():
     today = date.today()
+    week_start = today - timedelta(days=today.weekday())
+
     with db() as connection:
-        user = connection.execute("SELECT name FROM users LIMIT 1").fetchone()
-        current = connection.execute("SELECT * FROM workouts WHERE id = 1").fetchone()
-        continuing = connection.execute("""
-            SELECT w.*, l.progress FROM workout_log l JOIN workouts w ON w.id = l.workout_id
-            WHERE l.progress > 0 AND l.progress < w.duration ORDER BY l.completed_on DESC LIMIT 1
-        """).fetchone()
-        week_start = today - timedelta(days=today.weekday())
-        week_minutes = connection.execute("SELECT COALESCE(SUM(minutes), 0) total FROM workout_log WHERE completed_on >= ?", (week_start.isoformat(),)).fetchone()["total"]
-        streak = connection.execute("SELECT COUNT(DISTINCT completed_on) count FROM workout_log WHERE minutes > 0").fetchone()["count"]
-    week = []
-    for offset in range(6):
-        day = week_start + timedelta(days=offset)
-        week.append({"date": day.isoformat(), "name": ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"][offset], "number": day.day, "active": day == today})
-    return jsonify({
-        "user": dict(user), "today_label": today.strftime("%A, %d de %B").capitalize(),
-        "today_workout": dict(current), "continue_workout": dict(continuing),
-        "stats": {"streak": streak, "week_minutes": week_minutes}, "week": week,
-    })
+        minutes = connection.execute(
+            """
+            SELECT COALESCE(SUM(minutes), 0) AS total
+            FROM workout_log
+            WHERE completed_on >= ?
+            """,
+            (week_start.isoformat(),)
+        ).fetchone()["total"]
+
+        streak = connection.execute(
+            """
+            SELECT COUNT(DISTINCT completed_on) AS total
+            FROM workout_log
+            WHERE minutes > 0
+            """
+        ).fetchone()["total"]
+
+    html = (TEMPLATES / "index.html").read_text(encoding="utf-8")
+
+    html = html.replace("[[NAME]]", session["user_name"])
+    html = html.replace(
+        "[[TODAY]]",
+        today.strftime("%A, %d de %B").capitalize()
+    )
+    html = html.replace("[[STREAK]]", str(streak))
+    html = html.replace("[[MINUTES]]", str(minutes))
+
+    return Response(html, mimetype="text/html")
 
 
-@app.post("/api/workouts/today/start")
+@app.get("/estilos/index.css")
+def styles():
+    return send_from_directory(ESTILOS, "index.css")
+
+
+@app.get("/IMG/LOGO.png")
+def logo():
+    return send_from_directory(IMG, "LOGO.png")
+
+
+@app.post("/start")
 def start_workout():
     with db() as connection:
-        connection.execute("INSERT INTO workout_log (workout_id, completed_on, minutes, progress) VALUES (1, ?, 35, 35)", (date.today().isoformat(),))
-    return jsonify({"message": "¡Entrenamiento guardado! Sumaste 35 minutos."})
+        connection.execute(
+            """
+            INSERT INTO workout_log
+            (workout_id, completed_on, minutes, progress)
+            VALUES (?, ?, ?, ?)
+            """,
+            (
+                1,
+                date.today().isoformat(),
+                35,
+                35
+            )
+        )
 
+    return redirect(url_for("home"))
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        email = request.form["email"]
+        password = request.form["password"]
+
+        with db() as connection:
+            account = connection.execute(
+                "SELECT * FROM accounts WHERE email = ?",
+                (email,)
+            ).fetchone()
+
+        if account and check_password_hash(account["password"], password):
+            session["user_id"] = account["id"]
+            session["user_name"] = account["name"]
+            return redirect(url_for("home"))
+
+        return render_template(
+            "login.html",
+            error="Correo o contraseña incorrectos."
+        )
+
+    return render_template("login.html")
+
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if request.method == "POST":
+        name = request.form["name"]
+        email = request.form["email"]
+        password = request.form["password"]
+
+        try:
+            with db() as connection:
+                connection.execute(
+                    """
+                    INSERT INTO accounts (name, email, password)
+                    VALUES (?, ?, ?)
+                    """,
+                    (
+                        name,
+                        email,
+                        generate_password_hash(password)
+                    )
+                )
+
+            return redirect(url_for("login"))
+
+        except sqlite3.IntegrityError:
+            return render_template(
+                "register.html",
+                error="Este correo ya está registrado."
+            )
+
+    return render_template("register.html")
+
+
+@app.get("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("login"))
 
 if __name__ == "__main__":
     initialize_database()

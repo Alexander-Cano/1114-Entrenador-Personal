@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login | Kenesis</title>
+  <link rel="stylesheet" href="/estilos/index.css">
+</head>
+<body>
+  <main class="login-page">
+    <img class="login-logo" src="/IMG/LOGO.png" alt="Kenesis">
+
+    <h1>Bienvenido a Kenesis</h1>
+    <p>Inicia sesión para continuar tu entrenamiento.</p>
+
+    {% if error %}
+      <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <form class="login-form" method="post">
+      <input type="email" name="email" placeholder="Correo electrónico" required>
+      <input type="password" name="password" placeholder="Contraseña" required>
+      <button type="submit" class="login-button">Iniciar sesión</button>
+    </form>
+
+    <p>¿No tienes cuenta?</p>
+    <a class="register-button" href="/register">Crear cuenta</a>
+  </main>
+</body>
+</html>
