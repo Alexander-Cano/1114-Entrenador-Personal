@@ -1,6 +1,6 @@
 # NOMBRE DEL PROYECTO: KINESIS
 
-**Proyecto:** Entrenador Personal 
+**Proyecto:** Entrenador Personal <br>
 **Stack:** HTML, CSS, Python
 
 <hr>
