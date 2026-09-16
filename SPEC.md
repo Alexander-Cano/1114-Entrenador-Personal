@@ -2,7 +2,6 @@
 
 **Proyecto:** Entrenador Personal 
 **Stack:** HTML, CSS, Python
-**Logo:** <img src="logo">
 
 <hr>
 
