@@ -5,7 +5,7 @@
 
 <hr>
 
-## 1. Resumen Ejecutivo
+## 1. Resumen
 
 Aplicación web ligera diseñada para ayudar al usuario a realizar rutinas de ejercicio guiadas desde casa, mantener el registro de sus sesiones y visualizar su progreso diario para asegurar la constancia.
 
