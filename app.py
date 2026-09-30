@@ -159,7 +159,7 @@ def start_workout():
             )
         )
 
-    return redirect(url_for("home"))
+    return redirect(url_for("comenzar.html"))
 
 
 @app.route("/login", methods=["GET", "POST"])
