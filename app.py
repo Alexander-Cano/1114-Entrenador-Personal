@@ -135,29 +135,19 @@ def styles():
     return send_from_directory(ESTILOS, "index.css")
 
 
+@app.get("/estilos/Comenzar.css")
+def dos():
+    return send_from_directory(ESTILOS, "Comenzar.css")
+
 @app.get("/IMG/LOGO.png")
 def logo():
     return send_from_directory(IMG, "LOGO.png")
 
 
-@app.post("/start")
-def start_workout():
-    with db() as connection:
-        connection.execute(
-            """
-            INSERT INTO workout_log
-            (workout_id, completed_on, minutes, progress)
-            VALUES (?, ?, ?, ?)
-            """,
-            (
-                1,
-                date.today().isoformat(),
-                35,
-                35
-            )
-        )
+@app.get("/comenzar")
+def comenzar():
+    return render_template("Comenzar.html")
 
-    return redirect(url_for("home"))
 
 
 @app.route("/login", methods=["GET", "POST"])

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#090a0a" />
+<title>Pulse — Entrenador personal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:wght@500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/estilos/Comenzar.css">
+</head>
+<body>
+<main class="phone-shell">
+
+    
+
+<section class="app" aria-label="Panel de entrenamiento">
+<header class="topbar">
+<div>
+<p class="eyebrow" id="today">Lunes, 28 de octubre</p>
+<h1>Tu estado</h1>
+</div>
+<button class="avatar" aria-label="Ver perfil">JD</button>
+</header>
+
+<div class="views">
+<section class="view active" data-view="state">
+<article class="score-card">
+<div class="arc" aria-label="Puntuación de actividad 75 de 100">
+<svg viewBox="0 0 240 135" role="img">
+<path class="arc-track" pathLength="100" d="M 25 120 A 95 95 0 0 1 215 120" />
+<path class="arc-value" pathLength="100" d="M 25 120 A 95 95 0 0 1 215 120" />
+</svg>
+<div class="score-text"><strong>75</strong><span>Actividad</span><b>★ ★</b></div>
+</div>
+<p>Vas por delante de tu ritmo semanal.</p>
+</article>
+
+<div class="metrics-grid">
+<article class="metric-card">
+<div class="metric-label"><span class="mini-icon flame">♨</span> Movimiento</div>
+<div class="metric-number"><strong id="calories">220</strong><span>/ 750 kcal</span></div>
+<div class="bars" data-bars="7"></div>
+</article>
+<article class="metric-card">
+<div class="metric-label"><span class="mini-icon">♟</span> Ejercicio</div>
+<div class="metric-number"><strong id="minutes">40</strong><span>/ 60 min</span></div>
+<div class="bars orange" data-bars="10"></div>
+</article>
+</div>
+
+<article class="run-card">
+<div class="card-kicker">↙ &nbsp; Carrera de mañana</div>
+<div class="run-content"><span class="medal">✦</span><div><strong>10,58</strong><small>km recorridos</small></div></div>
+</article>
+
+<article class="challenge-card">
+<div><p class="card-kicker">◉ &nbsp; Reto activo</p><h2>Semana sin excusas</h2><p class="subtle">3 de 5 entrenamientos completados</p></div>
+<div class="challenge-score"><strong>01</strong><span>80%</span></div>
+<div class="challenge-progress"><i></i></div>
+</article>
+</section>
+
+<section class="view" data-view="exercise">
+<p class="eyebrow">Plan de hoy</p><h2 class="page-title">Entrena con intención</h2>
+<article class="workout-card featured"><span>FUERZA · 45 MIN</span><h3>Full body<br />essentials</h3><button class="primary-button" id="startWorkout">Iniciar sesión <b>→</b></button></article>
+<div class="section-row"><h3>Próximos</h3><span>Ver plan</span></div>
+<article class="list-card"><span class="round-icon">⚡</span><div><strong>Movilidad activa</strong><small>Mañana · 20 min</small></div><b>›</b></article>
+<article class="list-card"><span class="round-icon">◒</span><div><strong>Cardio de resistencia</strong><small>Miércoles · 35 min</small></div><b>›</b></article>
+</section>
+
+<section class="view" data-view="records">
+<p class="eyebrow">Tu progreso</p><h2 class="page-title">Récords personales</h2>
+<article class="record-hero"><span>MEJOR RACHA</span><strong>12 <small>días</small></strong><p>Tu constancia está en su mejor momento.</p></article>
+<article class="record-row"><span>5K más rápido</span><strong>24:18</strong><small>− 1:42</small></article>
+<article class="record-row"><span>Distancia semanal</span><strong>38,2 km</strong><small>+ 8%</small></article>
+<article class="record-row"><span>Sesiones completadas</span><strong>16</strong><small>este mes</small></article>
+</section>
+
+<section class="view" data-view="session">
+<p class="eyebrow">Sesión en curso</p><h2 class="page-title">Listo cuando tú</h2>
+<article class="session-timer"><span>CALENTAMIENTO</span><strong id="timer">00:00</strong><p>Activa tu cuerpo antes de empezar.</p><button class="primary-button" id="timerButton">Comenzar <b>▶</b></button></article>
+<div class="tip"><span>✦</span><p><strong>Consejo del coach</strong><br />Mantén una respiración estable: te ayudará a sostener el ritmo.</p></div>
+</section>
+</div>
+
+<nav class="bottom-nav" aria-label="Navegación principal">
+<button class="nav-item active" data-target="state" aria-label="Estado"><span class="nav-icon">♥</span><small>Estado</small></button>
+<button class="nav-item" data-target="exercise" aria-label="Ejercicio"><span class="nav-icon">⌁</span><small>Rutinas</small></button>
+<button class="nav-item session-action" data-target="session" aria-label="Iniciar sesión"><span class="nav-icon">▶</span><small>Entrenar</small></button>
+<button class="nav-item" data-target="records" aria-label="Récords"><span class="nav-icon">♜</span><small>Logros</small></button>
+<button class="nav-item" data-target="session" aria-label="Sesión"><span class="nav-icon">◌</span><small>Perfil</small></button>
+</nav>
+</section>
+</main>
+<div class="toast" role="status"></div>
+
+</body>
+</html>

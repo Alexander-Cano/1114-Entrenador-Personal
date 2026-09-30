@@ -8,7 +8,7 @@
 
 </head>
 <body>
-  <main class="app">
+  <main  class="phone-shell">
     <header class="top">
       <div class="brand">
         <img class="brand-mark" src="../IMG/LOGO.png" alt="Logo Kenesis">
@@ -18,7 +18,7 @@
       <a href="/logout" class="logout-button">Cerrar sesión</a>
     </header>
 
-    <section class="greeting">
+    <section class="greeting"  id="app">
       <p class="eyebrow">[[TODAY]]</p>
       <h1>Hola, [[NAME]] 👋<br>¿lista para moverte?</h1>
     </section>
@@ -28,12 +28,12 @@
       <h2>Fuerza de cuerpo completo</h2>
       <p>35 min · Nivel intermedio</p>
 
-      <form action="/start" method="post">
-        <button class="start" type="submit">
+
+        <a href="/comenzar" class="start">
           <span class="play">▶</span>
           Comenzar
-        </button>
-      </form>
+        </a>
+    
     </section>
 
     <section>
