@@ -3,6 +3,7 @@ from pathlib import Path
 import sqlite3
 from flask import Flask, Response, redirect, send_from_directory, url_for, request, session, render_template
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
 
 from flask import Flask, Response, redirect, send_from_directory, url_for
 
@@ -130,6 +131,7 @@ def home():
     return Response(html, mimetype="text/html")
 
 
+
 @app.get("/estilos/index.css")
 def styles():
     return send_from_directory(ESTILOS, "index.css")
@@ -148,6 +150,7 @@ def logo():
 def comenzar():
     return render_template("Comenzar.html")
 
+  
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -211,6 +214,56 @@ def register():
 def logout():
     session.clear()
     return redirect(url_for("login"))
+
+
+@app.get("/calendar")
+def calendar():
+    return redirect(url_for("home"))
+
+
+@app.get("/day/<int:day>")
+def select_day(day):
+    return redirect(url_for("home"))
+
+
+@app.get("/progress/streak")
+def progress_streak():
+    return redirect(url_for("home"))
+
+
+@app.get("/progress/minutes")
+def progress_minutes():
+    return redirect(url_for("home"))
+
+
+@app.get("/home")
+def nav_home():
+    return redirect(url_for("home"))
+
+
+@app.get("/plan")
+def nav_plan():
+    return render_template("plan.html")
+   
+
+
+@app.get("/progress")
+def nav_progress():
+    return redirect(url_for("home"))
+
+
+@app.get("/profile")
+def nav_profile():
+    return redirect(url_for("home"))
+
+
+
+@app.get("/plan")
+def plan():
+    today = datetime.now().strftime("%d/%m/%y")
+    return render_template("plan.html",today=today)
+
+
 
 if __name__ == "__main__":
     initialize_database()
