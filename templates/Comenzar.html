@@ -1,112 +1,327 @@
-
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="theme-color" content="#090a0a" />
-<title>Pulse — Entrenador personal</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:wght@500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/estilos/Comenzar.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090a0a">
+  <title>{{ workout.title }} — Kenesis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:wght@500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('styles', filename='Comenzar.css') }}">
 </head>
 <body>
-<main class="phone-shell">
+  <main class="phone-shell">
+    <section class="app workout-screen">
+      <header class="topbar">
+        <a class="back-link" href="{{ url_for('home') }}">← Volver al inicio</a>
+        <a class="session-brand" href="{{ url_for('home') }}" aria-label="Kenesis, volver al inicio">
+          <img src="{{ url_for('logo', filename='LOGO.png') }}" alt="Logo Kenesis">
+          <span>kenesis</span>
+        </a>
 
-    
+      </header>
 
-<section class="app" aria-label="Panel de entrenamiento">
-<header class="topbar">
-<div>
-<p class="eyebrow" id="today">Lunes, 28 de octubre</p>
-<h1>Tu estado</h1>
-</div>
-<button class="avatar" aria-label="Ver perfil">JD</button>
-</header>
+      <section class="session-intro">
+        <p class="eyebrow">Preparada para hoy</p>
+        <h1>Entrena a tu ritmo.</h1>
+        <p>Concéntrate en la técnica, respira y disfruta cada repetición.</p>
+      </section>
 
-<div class="views">
-<section class="view active" data-view="state">
-<article class="score-card">
-<div class="arc" aria-label="Puntuación de actividad 75 de 100">
-<svg viewBox="0 0 240 135" role="img">
-<path class="arc-track" pathLength="100" d="M 25 120 A 95 95 0 0 1 215 120" />
-<path class="arc-value" pathLength="100" d="M 25 120 A 95 95 0 0 1 215 120" />
-</svg>
-<div class="score-text"><strong>75</strong><span>Actividad</span><b>★ ★</b></div>
-</div>
-<p>Vas por delante de tu ritmo semanal.</p>
-</article>
+      <article class="workout-card featured session-hero">
+        <div class="session-hero-top">
+          <span class="workout-icon-large">{{ workout.icon }}</span>
+          <div>
+            <div class="card-kicker">{{ workout.level }}</div>
+            <h2>{{ workout.title }}</h2>
+          </div>
+        </div>
+        <div class="session-stats">
+          <span><b>{{ workout.duration }}</b> min</span>
+          <span><b>{{ streak }}</b> días de racha</span>
+          <span><b>{{ activity_score }}%</b> actividad</span>
+        </div>
+        <button class="scroll-hint" id="scrollToExercises" type="button">Ver paso a paso <b>↓</b></button>
+      </article>
 
-<div class="metrics-grid">
-<article class="metric-card">
-<div class="metric-label"><span class="mini-icon flame">♨</span> Movimiento</div>
-<div class="metric-number"><strong id="calories">220</strong><span>/ 750 kcal</span></div>
-<div class="bars" data-bars="7"></div>
-</article>
-<article class="metric-card">
-<div class="metric-label"><span class="mini-icon">♟</span> Ejercicio</div>
-<div class="metric-number"><strong id="minutes">40</strong><span>/ 60 min</span></div>
-<div class="bars orange" data-bars="10"></div>
-</article>
-</div>
+      <section class="exercise-video-card" aria-labelledby="video-title">
+        <div class="video-heading">
+          <div>
+            <p class="card-kicker">Video del ejercicio</p>
+            <h2 id="video-title">Mira el movimiento</h2>
+          </div>
+          <span class="video-duration">00:30</span>
+        </div>
+        <div class="video-stage" id="videoStage">
+          <div class="video-grid"></div>
+          <div class="video-glow"></div>
+          <div class="demo-figure" aria-hidden="true">
+            <span class="figure-head"></span>
+            <span class="figure-body"></span>
+            <span class="figure-arm arm-left"></span>
+            <span class="figure-arm arm-right"></span>
+            <span class="figure-leg leg-left"></span>
+            <span class="figure-leg leg-right"></span>
+          </div>
+          <div class="video-overlay">
+            <span id="videoStatus">Selecciona un ejercicio</span>
+            <small>Movimiento guiado · técnica controlada</small>
+          </div>
+          <button class="video-play" id="videoPlay" type="button" aria-label="Reproducir demostración">▶</button>
+        </div>
+        <div class="video-controls">
+          <span id="videoTime">00:00</span>
+          <div class="video-progress"><i id="videoProgress"></i></div>
+          <span>00:30</span>
+        </div>
+        <p class="video-caption" id="videoCaption">Selecciona un ejercicio para ver su video demostrativo.</p>
+      </section>
 
-<article class="run-card">
-<div class="card-kicker">↙ &nbsp; Carrera de mañana</div>
-<div class="run-content"><span class="medal">✦</span><div><strong>10,58</strong><small>km recorridos</small></div></div>
-</article>
+      <section class="session-control-card" aria-labelledby="session-title">
+        <div class="session-section-heading">
+          <div>
+            <p class="card-kicker">Sesión en curso</p>
+            <h2 id="session-title">Tu entrenamiento</h2>
+          </div>
+          <strong id="progressPercent">0%</strong>
+        </div>
+        <div class="progress-track" aria-label="Progreso del circuito">
+          <i id="exerciseProgress"></i>
+        </div>
+        <div class="progress-copy">
+          <span id="progressLabel">0 de 6 ejercicios completados</span>
+          <span>{{ weekly_minutes }} min esta semana</span>
+        </div>
+        <div class="timer-panel">
+          <span>TIEMPO TRANSCURRIDO</span>
+          <strong id="timer">00:00</strong>
+          <div class="timer-actions">
+            <button class="primary-button" id="timerButton" type="button">Iniciar <b>▶</b></button>
+            <button class="secondary-button" id="resetButton" type="button" aria-label="Reiniciar temporizador">↺</button>
+          </div>
+          <p id="sessionStatus">Duración estimada: {{ workout.duration }} minutos.</p>
+        </div>
+      </section>
 
-<article class="challenge-card">
-<div><p class="card-kicker">◉ &nbsp; Reto activo</p><h2>Semana sin excusas</h2><p class="subtle">3 de 5 entrenamientos completados</p></div>
-<div class="challenge-score"><strong>01</strong><span>80%</span></div>
-<div class="challenge-progress"><i></i></div>
-</article>
-</section>
+      <section class="exercise-section" id="exerciseSection" aria-labelledby="exercise-title">
+        <div class="session-section-heading">
+          <div>
+            <p class="card-kicker">Circuito de hoy</p>
+            <h2 id="exercise-title">Paso a paso</h2>
+          </div>
+          <span class="exercise-hint">Selecciona y marca cada ejercicio</span>
+        </div>
+        <div class="exercise-list">
+          <article class="exercise-item selected" tabindex="0" role="button" data-exercise="0" data-name="Sentadilla controlada" data-description="Baja con el pecho abierto y empuja el suelo para subir." data-movement="squat">
+            <span class="exercise-number">01</span>
+            <span class="exercise-copy"><b>Sentadilla controlada</b><small>Fuerza de piernas y estabilidad · 10 repeticiones</small></span>
+            <button class="exercise-check" type="button" aria-label="Marcar sentadilla como completada">✓</button>
+          </article>
+          <article class="exercise-item" tabindex="0" role="button" data-exercise="1" data-name="Flexión inclinada" data-description="Mantén el cuerpo alineado y acerca el pecho con control." data-movement="push">
+            <span class="exercise-number">02</span>
+            <span class="exercise-copy"><b>Flexión inclinada</b><small>Pecho, brazos y control del tronco · 8 repeticiones</small></span>
+            <button class="exercise-check" type="button" aria-label="Marcar flexión como completada">✓</button>
+          </article>
+          <article class="exercise-item" tabindex="0" role="button" data-exercise="2" data-name="Zancada alterna" data-description="Da un paso largo, baja con suavidad y cambia de pierna." data-movement="lunge">
+            <span class="exercise-number">03</span>
+            <span class="exercise-copy"><b>Zancada alterna</b><small>Equilibrio y fuerza unilateral · 8 por pierna</small></span>
+            <button class="exercise-check" type="button" aria-label="Marcar zancada como completada">✓</button>
+          </article>
+          <article class="exercise-item" tabindex="0" role="button" data-exercise="3" data-name="Plancha frontal" data-description="Activa el abdomen, aprieta glúteos y respira sin hundir la espalda." data-movement="plank">
+            <span class="exercise-number">04</span>
+            <span class="exercise-copy"><b>Plancha frontal</b><small>Centro fuerte y respiración estable · 30 segundos</small></span>
+            <button class="exercise-check" type="button" aria-label="Marcar plancha como completada">✓</button>
+          </article>
+          <article class="exercise-item" tabindex="0" role="button" data-exercise="4" data-name="Puente de glúteos" data-description="Eleva la cadera, mantén un segundo arriba y baja lentamente." data-movement="bridge">
+            <span class="exercise-number">05</span>
+            <span class="exercise-copy"><b>Puente de glúteos</b><small>Activación de cadera y cadena posterior · 12 repeticiones</small></span>
+            <button class="exercise-check" type="button" aria-label="Marcar puente como completado">✓</button>
+          </article>
+          <article class="exercise-item" tabindex="0" role="button" data-exercise="5" data-name="Vuelta a la calma" data-description="Estira con suavidad y recupera tu respiración antes de terminar." data-movement="stretch">
+            <span class="exercise-number">06</span>
+            <span class="exercise-copy"><b>Vuelta a la calma</b><small>Movilidad y recuperación · 5 minutos</small></span>
+            <button class="exercise-check" type="button" aria-label="Marcar vuelta a la calma como completada">✓</button>
+          </article>
+        </div>
+      </section>
 
-<section class="view" data-view="exercise">
-<p class="eyebrow">Plan de hoy</p><h2 class="page-title">Entrena con intención</h2>
-<article class="workout-card featured"><span>FUERZA · 45 MIN</span><h3>Full body<br />essentials</h3><button class="primary-button" id="startWorkout">Iniciar sesión <b>→</b></button></article>
-<div class="section-row"><h3>Próximos</h3><span>Ver plan</span></div>
-<article class="list-card"><span class="round-icon">⚡</span><div><strong>Movilidad activa</strong><small>Mañana · 20 min</small></div><b>›</b></article>
-<article class="list-card"><span class="round-icon">◒</span><div><strong>Cardio de resistencia</strong><small>Miércoles · 35 min</small></div><b>›</b></article>
-</section>
+      <div class="tip coach-tip">
+        <span>✦</span>
+        <p><strong>Consejo del coach</strong><br>Si necesitas bajar la intensidad, hazlo. La constancia empieza por escuchar tu cuerpo.</p>
+      </div>
 
-<section class="view" data-view="records">
-<p class="eyebrow">Tu progreso</p><h2 class="page-title">Récords personales</h2>
-<article class="record-hero"><span>MEJOR RACHA</span><strong>12 <small>días</small></strong><p>Tu constancia está en su mejor momento.</p></article>
-<article class="record-row"><span>5K más rápido</span><strong>24:18</strong><small>− 1:42</small></article>
-<article class="record-row"><span>Distancia semanal</span><strong>38,2 km</strong><small>+ 8%</small></article>
-<article class="record-row"><span>Sesiones completadas</span><strong>16</strong><small>este mes</small></article>
-</section>
+      <form class="complete-form" action="{{ url_for('complete_workout', workout_id=workout.id) }}" method="post">
+        <button class="complete-button" type="submit">Registrar entrenamiento completado <b>✓</b></button>
+      </form>
+      <a class="return-link" href="{{ url_for('home') }}">← Volver al inicio</a>
+    </section>
+  </main>
 
-<section class="view" data-view="session">
-<p class="eyebrow">Sesión en curso</p><h2 class="page-title">Listo cuando tú</h2>
-<article class="session-timer"><span>CALENTAMIENTO</span><strong id="timer">00:00</strong><p>Activa tu cuerpo antes de empezar.</p><button class="primary-button" id="timerButton">Comenzar <b>▶</b></button></article>
-<div class="tip"><span>✦</span><p><strong>Consejo del coach</strong><br />Mantén una respiración estable: te ayudará a sostener el ritmo.</p></div>
-</section>
-</div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<nav class="bottom-nav" aria-label="Navegación principal">
-<button class="nav-item active" data-target="state" aria-label="Estado"><span class="nav-icon">♥</span><small>Estado</small></button>
-<button class="nav-item" data-target="exercise" aria-label="Ejercicio"><span class="nav-icon">⌁</span><small>Rutinas</small></button>
-<button class="nav-item session-action" data-target="session" aria-label="Iniciar sesión"><span class="nav-icon">▶</span><small>Entrenar</small></button>
-<button class="nav-item" data-target="records" aria-label="Récords"><span class="nav-icon">♜</span><small>Logros</small></button>
-<button class="nav-item" data-target="session" aria-label="Sesión"><span class="nav-icon">◌</span><small>Perfil</small></button>
-</nav>
-</section>
-</main>
-<div class="toast" role="status"></div>
+  <script>
+    const timer = document.getElementById("timer");
+    const timerButton = document.getElementById("timerButton");
+    const resetButton = document.getElementById("resetButton");
+    const sessionStatus = document.getElementById("sessionStatus");
+    const progressBar = document.getElementById("exerciseProgress");
+    const progressLabel = document.getElementById("progressLabel");
+    const progressPercent = document.getElementById("progressPercent");
+    const toast = document.getElementById("toast");
+    const videoStage = document.getElementById("videoStage");
+    const videoPlay = document.getElementById("videoPlay");
+    const videoStatus = document.getElementById("videoStatus");
+    const videoTime = document.getElementById("videoTime");
+    const videoProgress = document.getElementById("videoProgress");
+    const videoCaption = document.getElementById("videoCaption");
+    const videoTitle = document.getElementById("video-title");
+    const exercises = Array.from(document.querySelectorAll(".exercise-item"));
+    let elapsed = 0;
+    let timerId = null;
+    let previewElapsed = 0;
+    let previewId = null;
+    let selectedExercise = null;
 
+    function renderTimer() {
+      const minutes = String(Math.floor(elapsed / 60)).padStart(2, "0");
+      const seconds = String(elapsed % 60).padStart(2, "0");
+      timer.textContent = minutes + ":" + seconds;
+    }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("visible");
+      window.setTimeout(() => toast.classList.remove("visible"), 2200);
+    }
 
+    function updateProgress() {
+      const completed = exercises.filter((item) => item.classList.contains("completed")).length;
+      const percentage = Math.round((completed / exercises.length) * 100);
+      progressBar.style.width = percentage + "%";
+      progressPercent.textContent = percentage + "%";
+      progressLabel.textContent = completed + " de " + exercises.length + " ejercicios completados";
+      if (completed === exercises.length) {
+        sessionStatus.textContent = "Circuito completo. ¡Excelente trabajo!";
+        showToast("Circuito completado ✦");
+      }
+    }
+
+    timerButton.addEventListener("click", () => {
+      if (timerId) {
+        clearInterval(timerId);
+        timerId = null;
+        timerButton.innerHTML = "Continuar <b>▶</b>";
+        sessionStatus.textContent = "Temporizador en pausa. Retoma cuando estés lista.";
+        return;
+      }
+      timerId = window.setInterval(() => {
+        elapsed += 1;
+        renderTimer();
+      }, 1000);
+      timerButton.innerHTML = "Pausar <b>Ⅱ</b>";
+      sessionStatus.textContent = "Sesión en curso. ¡Tú puedes!";
+    });
+
+    resetButton.addEventListener("click", () => {
+      if (timerId) {
+        clearInterval(timerId);
+        timerId = null;
+      }
+      elapsed = 0;
+      renderTimer();
+      timerButton.innerHTML = "Iniciar <b>▶</b>";
+      sessionStatus.textContent = "Temporizador reiniciado.";
+      showToast("Temporizador reiniciado");
+    });
+
+    function renderPreview() {
+      const seconds = String(previewElapsed).padStart(2, "0");
+      videoTime.textContent = "00:" + seconds;
+      videoProgress.style.width = (previewElapsed / 30) * 100 + "%";
+    }
+
+    function stopPreview() {
+      clearInterval(previewId);
+      previewId = null;
+      videoStage.classList.remove("is-playing");
+      videoPlay.innerHTML = "▶";
+      videoPlay.setAttribute("aria-label", "Reproducir demostración");
+      if (selectedExercise) {
+        videoStatus.textContent = "Video · " + selectedExercise.dataset.name;
+        videoCaption.textContent = selectedExercise.dataset.description;
+      } else {
+        videoStatus.textContent = "Selecciona un ejercicio";
+        videoCaption.textContent = "Selecciona un ejercicio para ver su video demostrativo.";
+      }
+    }
+
+    function selectExercise(exercise) {
+      stopPreview();
+      previewElapsed = 0;
+      renderPreview();
+      exercises.forEach((item) => item.classList.remove("selected"));
+      exercise.classList.add("selected");
+      selectedExercise = exercise;
+      videoTitle.textContent = exercise.dataset.name;
+      videoStage.dataset.movement = exercise.dataset.movement;
+      videoStatus.textContent = "Video · " + exercise.dataset.name;
+      videoCaption.textContent = exercise.dataset.description;
+    }
+
+    videoPlay.addEventListener("click", () => {
+      if (previewId) {
+        stopPreview();
+        return;
+      }
+      if (previewElapsed >= 30) {
+        previewElapsed = 0;
+        renderPreview();
+      }
+      videoStage.classList.add("is-playing");
+      videoPlay.innerHTML = "Ⅱ";
+      videoPlay.setAttribute("aria-label", "Pausar demostración");
+      videoStatus.textContent = "Reproduciendo video · " + selectedExercise.dataset.name;
+      videoCaption.textContent = "Observa el ritmo y acompaña el movimiento con tu respiración.";
+      previewId = window.setInterval(() => {
+        previewElapsed += 1;
+        renderPreview();
+        if (previewElapsed >= 30) {
+          stopPreview();
+          videoStatus.textContent = "Video completo · " + selectedExercise.dataset.name;
+          videoCaption.textContent = "Ahora puedes intentar este movimiento a tu propio ritmo.";
+        }
+      }, 1000);
+    });
+
+    exercises.forEach((exercise) => {
+      exercise.addEventListener("click", (event) => {
+        if (!event.target.closest(".exercise-check")) {
+          selectExercise(exercise);
+        }
+      });
+      exercise.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          selectExercise(exercise);
+        }
+      });
+      exercise.querySelector(".exercise-check").addEventListener("click", (event) => {
+        event.stopPropagation();
+        exercise.classList.toggle("completed");
+        exercise.setAttribute("aria-pressed", exercise.classList.contains("completed"));
+        updateProgress();
+      });
+    });
+
+    selectExercise(exercises[0]);
+    updateProgress();
+
+    document.getElementById("scrollToExercises").addEventListener("click", () => {
+      document.getElementById("exerciseSection").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    });
+  </script>
 </body>
 </html>

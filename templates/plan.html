@@ -1,280 +1,73 @@
-
 <!doctype html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Kenesis — Entrenamiento personal</title>
-
-  <link rel="stylesheet" href="/estilos/index.css">
-<link
-  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded"
-  rel="stylesheet">
-
+  <title>Plan — Kenesis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('styles', filename='index.css') }}">
 </head>
-
 <body>
+  <main class="phone-shell">
+    <section class="app">
+      <header class="top">
+        <a class="brand" href="{{ url_for('home') }}">
+          <img class="brand-mark" src="{{ url_for('logo', filename='LOGO.png') }}" alt="Logo Kenesis">
+          <span>kenesis</span>
+        </a>
+        <a class="profile-chip" href="{{ url_for('nav_profile') }}">{{ user_initials }}</a>
+      </header>
 
-  <main class="app">
+      <section class="greeting compact">
+        <p class="eyebrow">{% if calendar_view %}Calendario semanal{% else %}Plan de entrenamiento{% endif %}</p>
+        <h1>Entrena con intención.</h1>
+      </section>
 
-    <!-- HEADER -->
+      <section class="panel">
+        <div class="section-head">
+          <h2>Esta semana</h2>
+          <span class="muted">{{ weekly_minutes }} min</span>
+        </div>
+        <div class="week">
+          {% for day in week_days %}
+            <a class="day{% if day.is_selected %} active{% endif %}{% if day.completed %} completed{% endif %}"
+               href="{{ url_for('select_day', day=day.iso) }}">
+              <span>{{ day.label }}</span><strong>{{ day.number }}</strong>
+            </a>
+          {% endfor %}
+        </div>
+      </section>
 
-    <header class="top">
+      <section>
+        <div class="section-head">
+          <h2>Rutinas disponibles</h2>
+          <span class="muted">{{ workouts|length }} sesiones</span>
+        </div>
+        <div class="workout-list">
+          {% for workout in workouts %}
+            <article class="workout-row">
+              <span class="workout-icon">{{ workout.icon }}</span>
+              <div class="workout-copy">
+                <strong>{{ workout.title }}</strong>
+                <small>{{ workout.duration }} min · {{ workout.level }}</small>
+              </div>
+              <a class="small-button" href="{{ url_for('comenzar', workout=workout.id) }}">Abrir</a>
+            </article>
+          {% else %}
+            <p class="empty-state">Todavía no hay rutinas disponibles.</p>
+          {% endfor %}
+        </div>
+      </section>
 
-      <div class="brand">
-        <img
-          class="brand-mark"
-          src="../IMG/LOGO.png"
-          alt="Logo Kenesis"
-        >
-        kenesis
-      </div>
-
-      <a
-        href="/logout"
-        class="logout-button"
-      >
-        Cerrar sesión
-      </a>
-
-    </header>
-
-
-    <!-- SALUDO -->
-
-    <section class="greeting">
-
-      <p >
-        {{today}}
-      </p>
-
-      <h1>
-        Hola, [[NAME]] 👋<br>
-        ¿lista para moverte?
-      </h1>
-
+      <nav class="bottom-nav" aria-label="Navegación principal">
+        <a href="{{ url_for('home') }}" class="nav-button"><span class="nav-icon">⌂</span><span>Inicio</span></a>
+        <a href="{{ url_for('nav_plan') }}" class="nav-button active"><span class="nav-icon">▦</span><span>Plan</span></a>
+        <a href="{{ url_for('nav_progress') }}" class="nav-button"><span class="nav-icon">↗</span><span>Progreso</span></a>
+        <a href="{{ url_for('nav_profile') }}" class="nav-button"><span class="nav-icon">◯</span><span>Perfil</span></a>
+      </nav>
     </section>
-
-
-        <section>
-
-      <div class="section-head">
-
-        <h2>
-          Tu semana
-        </h2>
-
-        <!-- BOTÓN CALENDARIO -->
-
-        <form
-          action="/calendar"
-          method="get"
-        >
-
-          <button
-            type="submit"
-            class="calendar-button"
-          >
-            Calendario
-          </button>
-
-        </form>
-
-      </div>
-
-
-      <!-- DÍAS -->
-
-      <div class="week">
-
-        <form action="/day/15" method="get">
-          <button
-            class="day"
-            type="submit"
-          >
-            <span>Lun</span>
-            <strong>15</strong>
-          </button>
-        </form>
-
-
-        <form action="/day/16" method="get">
-          <button
-            class="day active"
-            type="submit"
-          >
-            <span>Mar</span>
-            <strong>16</strong>
-          </button>
-        </form>
-
-
-        <form action="/day/17" method="get">
-          <button
-            class="day"
-            type="submit"
-          >
-            <span>Mié</span>
-            <strong>17</strong>
-          </button>
-        </form>
-
-
-        <form action="/day/18" method="get">
-          <button
-            class="day"
-            type="submit"
-          >
-            <span>Jue</span>
-            <strong>18</strong>
-          </button>
-        </form>
-
-
-        <form action="/day/19" method="get">
-          <button
-            class="day"
-            type="submit"
-          >
-            <span>Vie</span>
-            <strong>19</strong>
-          </button>
-        </form>
-
-
-        <form action="/day/20" method="get">
-          <button
-            class="day"
-            type="submit"
-          >
-            <span>Sáb</span>
-            <strong>20</strong>
-          </button>
-        </form>
-
-      </div>
-
-    </section>
-
-
-    <!-- PROGRESO -->
-
-    <section>
-
-      <div class="section-head">
-
-        <h2>
-          Progreso
-        </h2>
-
-      </div>
-
-
-      <div class="summary">
-
-
-        <!-- RACHA -->
-
-        <form
-          action="/progress/streak"
-          method="get"
-        >
-
-          <button
-            class="stat"
-            type="submit"
-          >
-
-            <span class="icon">
-              🔥
-            </span>
-
-            <b>
-              [[STREAK]] días
-            </b>
-
-            <small>
-              racha actual
-            </small>
-
-          </button>
-
-        </form>
-
-
-        <!-- MINUTOS -->
-
-        <form
-          action="/progress/minutes"
-          method="get"
-        >
-
-          <button
-            class="stat"
-            type="submit"
-          >
-
-            <span class="icon">
-              ⚡
-            </span>
-
-            <b>
-              [[MINUTES]] min
-            </b>
-
-            <small>
-              esta semana
-            </small>
-
-          </button>
-
-        </form>
-
-
-      </div>
-
-
-      
-
-    </section>
-
-
-<nav class="bottom-nav">
-
-  <a href="/home" class="nav-button active">
-    <span class="nav-icon">
-      <span class="material-symbols-rounded">home</span>
-    </span>
-    <span>Home</span>
-  </a>
-
-  <a href="/plan" class="nav-button">
-    <span class="nav-icon">
-      <span class="material-symbols-rounded">calendar_month</span>
-    </span>
-    <span>Plan</span>
-  </a>
-
-  <a href="/progress" class="nav-button">
-    <span class="nav-icon">
-      <span class="material-symbols-rounded">monitoring</span>
-    </span>
-    <span>Progress</span>
-  </a>
-
-  <a href="/profile" class="nav-button">
-    <span class="nav-icon">
-      <span class="material-symbols-rounded">person</span>
-    </span>
-    <span>Profile</span>
-  </a>
-
-</nav>
-
-
-
   </main>
-
 </body>
 </html>

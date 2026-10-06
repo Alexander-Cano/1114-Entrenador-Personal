@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil — Kenesis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('styles', filename='index.css') }}">
+</head>
+<body>
+  <main class="phone-shell">
+    <section class="app">
+      <header class="top">
+        <a class="brand" href="{{ url_for('home') }}"><img class="brand-mark" src="{{ url_for('logo', filename='LOGO.png') }}" alt="Logo Kenesis"><span>kenesis</span></a>
+      </header>
+      <section class="profile-hero">
+        <div class="profile-avatar">{{ user_initials }}</div>
+        <p class="eyebrow">Tu perfil</p>
+        <h1>{{ user_name }}</h1>
+        <p>{{ user_email or "Cuenta de atleta" }}</p>
+      </section>
+      <div class="summary">
+        <div class="stat"><span class="icon">🔥</span><b>{{ streak }}</b><small>días de racha</small></div>
+        <div class="stat"><span class="icon">🏋️</span><b>{{ total_sessions }}</b><small>sesiones hechas</small></div>
+      </div>
+      <section class="settings-card">
+        <a href="{{ url_for('nav_plan') }}"><span>▦</span><strong>Mi plan</strong><small>Ver rutinas</small><b>›</b></a>
+        <a href="{{ url_for('nav_progress') }}"><span>↗</span><strong>Mis avances</strong><small>Revisar progreso</small><b>›</b></a>
+        <a class="danger-link" href="{{ url_for('logout') }}"><span>↪</span><strong>Cerrar sesión</strong><small>Salir de Kenesis</small><b>›</b></a>
+      </section>
+      <nav class="bottom-nav" aria-label="Navegación principal">
+        <a href="{{ url_for('home') }}" class="nav-button"><span class="nav-icon">⌂</span><span>Inicio</span></a>
+        <a href="{{ url_for('nav_plan') }}" class="nav-button"><span class="nav-icon">▦</span><span>Plan</span></a>
+        <a href="{{ url_for('nav_progress') }}" class="nav-button"><span class="nav-icon">↗</span><span>Progreso</span></a>
+        <a href="{{ url_for('nav_profile') }}" class="nav-button active"><span class="nav-icon">◯</span><span>Perfil</span></a>
+      </nav>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progreso — Kenesis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('styles', filename='index.css') }}">
+</head>
+<body>
+  <main class="phone-shell">
+    <section class="app">
+      <header class="top">
+        <a class="brand" href="{{ url_for('home') }}"><img class="brand-mark" src="{{ url_for('logo', filename='LOGO.png') }}" alt="Logo Kenesis"><span>kenesis</span></a>
+        <a class="profile-chip" href="{{ url_for('nav_profile') }}">{{ user_initials }}</a>
+      </header>
+      <section class="greeting compact">
+        <p class="eyebrow">Tu progreso</p>
+        <h1>Cada sesión cuenta.</h1>
+      </section>
+      <section class="progress-hero" id="streak">
+        <div>
+          <span class="hero-label">Racha actual</span>
+          <strong>{{ streak }} <small>días</small></strong>
+          <p>La constancia construye resultados.</p>
+        </div>
+        <div class="score-ring" style="--score: {{ activity_score }}%"><span>{{ activity_score }}%</span></div>
+      </section>
+      <div class="summary progress-summary" id="minutes">
+        <div class="stat"><span class="icon">⚡</span><b>{{ weekly_minutes }} min</b><small>esta semana</small></div>
+        <div class="stat"><span class="icon">✓</span><b>{{ total_sessions }}</b><small>sesiones completas</small></div>
+      </div>
+      <section>
+        <div class="section-head"><h2>Actividad reciente</h2><span class="muted">{{ total_minutes }} min acumulados</span></div>
+        <div class="history-list">
+          {% for log in recent_logs %}
+            <article class="history-row">
+              <span class="workout-icon">{{ log.icon }}</span>
+              <div class="workout-copy"><strong>{{ log.title }}</strong><small>{{ log.completed_on }} · {{ log.minutes }} min</small></div>
+              <span class="check">✓</span>
+            </article>
+          {% else %}
+            <p class="empty-state">Completa tu primer entrenamiento para ver tu historial.</p>
+          {% endfor %}
+        </div>
+      </section>
+      <nav class="bottom-nav" aria-label="Navegación principal">
+        <a href="{{ url_for('home') }}" class="nav-button"><span class="nav-icon">⌂</span><span>Inicio</span></a>
+        <a href="{{ url_for('nav_plan') }}" class="nav-button"><span class="nav-icon">▦</span><span>Plan</span></a>
+        <a href="{{ url_for('nav_progress') }}" class="nav-button active"><span class="nav-icon">↗</span><span>Progreso</span></a>
+        <a href="{{ url_for('nav_profile') }}" class="nav-button"><span class="nav-icon">◯</span><span>Perfil</span></a>
+      </nav>
+    </section>
+  </main>
+</body>
+</html>
