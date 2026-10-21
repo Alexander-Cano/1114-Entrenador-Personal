@@ -46,33 +46,31 @@
 
       <section class="exercise-video-card" aria-labelledby="video-title">
         <div class="video-heading">
-          <div>
+        </div>
             <p class="card-kicker">Video del ejercicio</p>
             <h2 id="video-title">Mira el movimiento</h2>
           </div>
           <span class="video-duration">00:30</span>
         </div>
-        <div class="video-stage" id="videoStage">
-          <div class="video-grid"></div>
-          <div class="video-glow"></div>
-          <div class="demo-figure" aria-hidden="true">
-            <span class="figure-head"></span>
-            <span class="figure-body"></span>
-            <span class="figure-arm arm-left"></span>
-            <span class="figure-arm arm-right"></span>
-            <span class="figure-leg leg-left"></span>
-            <span class="figure-leg leg-right"></span>
+       
+          
+         
+           <video width="640" height="360"   class="videou">
+        <source src="{{ url_for('static', filename='Si.mp4') }}" type="video/mp4">
+        Tu navegador no soporta la reproducción de vídeos.
+    </video>
+ </div>
+</div>
           </div>
           <div class="video-overlay">
-            <span id="videoStatus">Selecciona un ejercicio</span>
-            <small>Movimiento guiado · técnica controlada</small>
+         
           </div>
-          <button class="video-play" id="videoPlay" type="button" aria-label="Reproducir demostración">▶</button>
+          
         </div>
         <div class="video-controls">
           <span id="videoTime">00:00</span>
           <div class="video-progress"><i id="videoProgress"></i></div>
-          <span>00:30</span>
+          <span>00:00</span>
         </div>
         <p class="video-caption" id="videoCaption">Selecciona un ejercicio para ver su video demostrativo.</p>
       </section>
