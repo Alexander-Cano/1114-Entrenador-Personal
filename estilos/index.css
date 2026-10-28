@@ -246,8 +246,22 @@ h2 { margin-bottom: 0; font-size: 18px; letter-spacing: -.5px; }
   border-top: 1px solid var(--line);
   background: rgba(9, 10, 10, .95);
   backdrop-filter: blur(12px);
+  isolation: isolate;
+}
+.bottom-nav::before {
+  position: absolute;
+  top: -1px;
+  right: 12%;
+  left: 12%;
+  z-index: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(214, 255, 105, .45), transparent);
+  content: "";
+  opacity: .65;
 }
 .nav-button {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -257,6 +271,33 @@ h2 { margin-bottom: 0; font-size: 18px; letter-spacing: -.5px; }
   font-size: 11px;
   font-weight: 600;
   text-decoration: none;
+  transform: translateY(0);
+  transition: color .24s ease, transform .24s cubic-bezier(.2, .8, .2, 1), filter .24s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.nav-button::after {
+  position: absolute;
+  bottom: 1px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--lime);
+  content: "";
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity .24s ease, transform .24s cubic-bezier(.2, .8, .2, 1);
+}
+.nav-button:hover,
+.nav-button:focus-visible {
+  color: var(--ink);
+  transform: translateY(-3px);
+}
+.nav-button:focus-visible {
+  outline: none;
+  filter: drop-shadow(0 0 7px rgba(214, 255, 105, .28));
+}
+.nav-button:active {
+  transform: translateY(-1px) scale(.94);
 }
 .nav-icon {
   display: grid;
@@ -265,9 +306,56 @@ h2 { margin-bottom: 0; font-size: 18px; letter-spacing: -.5px; }
   height: 30px;
   border-radius: 999px;
   font-size: 21px;
+  transform: translateY(0) scale(1);
+  transition: background .24s ease, color .24s ease, box-shadow .24s ease, transform .24s cubic-bezier(.2, .8, .2, 1);
+}
+.nav-button:hover .nav-icon,
+.nav-button:focus-visible .nav-icon {
+  background: rgba(214, 255, 105, .13);
+  color: var(--lime);
+  transform: translateY(-2px) scale(1.08);
 }
 .nav-button.active { color: var(--ink); }
-.nav-button.active .nav-icon { background: var(--lime); color: #090a0a; }
+.nav-button.active::after {
+  opacity: 1;
+  transform: scale(1);
+  animation: nav-dot-pulse 2.2s ease-in-out infinite;
+}
+.nav-button.active .nav-icon {
+  background: var(--lime);
+  color: #090a0a;
+  box-shadow: 0 6px 16px rgba(214, 255, 105, .22);
+  animation: nav-active-float 2.8s ease-in-out infinite;
+}
+.nav-button.active:hover .nav-icon,
+.nav-button.active:focus-visible .nav-icon {
+  background: var(--lime-soft);
+  color: #090a0a;
+  box-shadow: 0 8px 20px rgba(214, 255, 105, .35);
+}
+
+@keyframes nav-active-float {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-2px) scale(1.04); }
+}
+
+@keyframes nav-dot-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(214, 255, 105, .28); }
+  50% { box-shadow: 0 0 0 5px rgba(214, 255, 105, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-button,
+  .nav-icon,
+  .nav-button::after {
+    transition-duration: .01ms;
+  }
+
+  .nav-button.active .nav-icon,
+  .nav-button.active::after {
+    animation: none;
+  }
+}
 
 .panel, .workout-row, .history-row, .settings-card {
   border: 1px solid var(--line);

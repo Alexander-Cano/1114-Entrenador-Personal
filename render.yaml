@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: kenesis-entrenador-personal
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: KENSIS_SECRET_KEY
+        generateValue: true

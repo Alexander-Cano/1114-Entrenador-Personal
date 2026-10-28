@@ -9,26 +9,6 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-import cv2
-
-# Especifica la ruta: "Carpeta/nombre_del_video.mp4"
-cap = cv2.VideoCapture("Si.mp4")
-
-while cap.isOpened():
-  ret, frame = cap.read()
-  if not ret:
-    print("No se pudo leer el archivo o el vídeo ha terminado.")
-    break
-
-  cv2.imshow("Reproductor de Video", frame)
-
-  # Presiona 'q' para salir
-  if cv2.waitKey(25) & 0xFF == ord("q"):
-    break
-
-cap.release()
-cv2.destroyAllWindows()
-
 
 ROOT = Path(__file__).resolve().parent
 DATABASE = ROOT / "ritmo.db"
