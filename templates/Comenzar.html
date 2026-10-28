@@ -46,31 +46,31 @@
 
       <section class="exercise-video-card" aria-labelledby="video-title">
         <div class="video-heading">
-        </div>
+          <div>
             <p class="card-kicker">Video del ejercicio</p>
             <h2 id="video-title">Mira el movimiento</h2>
           </div>
           <span class="video-duration">00:30</span>
         </div>
-       
-          
-         
-           <video width="640" height="360"   class="videou">
-        <source src="{{ url_for('static', filename='Si.mp4') }}" type="video/mp4">
-        Tu navegador no soporta la reproducción de vídeos.
-    </video>
- </div>
-</div>
+        <div class="video-stage" id="videoStage" data-movement="squat">
+          <video id="exerciseVideo" class="exercise-video" preload="metadata" playsinline>
+            <source src="{{ url_for('static', filename='Si.mp4') }}" type="video/mp4">
+            Tu navegador no soporta la reproducción de vídeos.
+          </video>
+          <div class="video-placeholder" aria-hidden="true">
+            <span>VIDEO</span>
+            <small>Agrega aquí la demostración del ejercicio</small>
           </div>
           <div class="video-overlay">
-         
+            <span id="videoStatus">Video · Sentadilla controlada</span>
+            <small>Demostración guiada · 00:30</small>
           </div>
-          
+          <button class="video-play" id="videoPlay" type="button" aria-label="Reproducir demostración">▶</button>
         </div>
         <div class="video-controls">
           <span id="videoTime">00:00</span>
           <div class="video-progress"><i id="videoProgress"></i></div>
-          <span>00:00</span>
+          <span id="videoDuration">00:30</span>
         </div>
         <p class="video-caption" id="videoCaption">Selecciona un ejercicio para ver su video demostrativo.</p>
       </section>
@@ -153,6 +153,12 @@
       </form>
       <a class="return-link" href="{{ url_for('home') }}">← Volver al inicio</a>
     </section>
+    <nav class="bottom-nav" aria-label="Navegación principal">
+      <a href="{{ url_for('home') }}" class="nav-button"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3.5 10.8 12 3.8l8.5 7"></path><path d="M5.5 9.5v9h13v-9"></path><path d="M9.5 18.5v-5h5v5"></path></svg></span><span>Inicio</span></a>
+      <a href="{{ url_for('nav_plan') }}" class="nav-button"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"></rect><path d="M8 4v16M4 9h16M4 14h16"></path></svg></span><span>Plan</span></a>
+      <a href="{{ url_for('nav_progress') }}" class="nav-button"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m4 17 5-5 3 3 6-7"></path><path d="M14 8h4v4"></path></svg></span><span>Progreso</span></a>
+      <a href="{{ url_for('nav_profile') }}" class="nav-button"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c.8-3.2 3.2-5 7-5s6.2 1.8 7 5"></path></svg></span><span>Perfil</span></a>
+    </nav>
   </main>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -168,16 +174,16 @@
     const toast = document.getElementById("toast");
     const videoStage = document.getElementById("videoStage");
     const videoPlay = document.getElementById("videoPlay");
+    const exerciseVideo = document.getElementById("exerciseVideo");
     const videoStatus = document.getElementById("videoStatus");
     const videoTime = document.getElementById("videoTime");
     const videoProgress = document.getElementById("videoProgress");
+    const videoDuration = document.getElementById("videoDuration");
     const videoCaption = document.getElementById("videoCaption");
     const videoTitle = document.getElementById("video-title");
     const exercises = Array.from(document.querySelectorAll(".exercise-item"));
     let elapsed = 0;
     let timerId = null;
-    let previewElapsed = 0;
-    let previewId = null;
     let selectedExercise = null;
 
     function renderTimer() {
@@ -233,14 +239,17 @@
     });
 
     function renderPreview() {
-      const seconds = String(previewElapsed).padStart(2, "0");
-      videoTime.textContent = "00:" + seconds;
-      videoProgress.style.width = (previewElapsed / 30) * 100 + "%";
+      const currentTime = Math.floor(exerciseVideo.currentTime || 0);
+      const duration = exerciseVideo.duration || 30;
+      const minutes = String(Math.floor(currentTime / 60)).padStart(2, "0");
+      const seconds = String(currentTime % 60).padStart(2, "0");
+      videoTime.textContent = minutes + ":" + seconds;
+      videoProgress.style.width = Math.min(100, (currentTime / duration) * 100) + "%";
     }
 
     function stopPreview() {
-      clearInterval(previewId);
-      previewId = null;
+      exerciseVideo.pause();
+      exerciseVideo.currentTime = 0;
       videoStage.classList.remove("is-playing");
       videoPlay.innerHTML = "▶";
       videoPlay.setAttribute("aria-label", "Reproducir demostración");
@@ -255,7 +264,6 @@
 
     function selectExercise(exercise) {
       stopPreview();
-      previewElapsed = 0;
       renderPreview();
       exercises.forEach((item) => item.classList.remove("selected"));
       exercise.classList.add("selected");
@@ -267,28 +275,32 @@
     }
 
     videoPlay.addEventListener("click", () => {
-      if (previewId) {
+      if (!exerciseVideo.paused) {
         stopPreview();
         return;
       }
-      if (previewElapsed >= 30) {
-        previewElapsed = 0;
-        renderPreview();
-      }
+      exerciseVideo.play().catch(() => {
+        videoStatus.textContent = "Pulsa el video para reproducirlo";
+      });
       videoStage.classList.add("is-playing");
       videoPlay.innerHTML = "Ⅱ";
       videoPlay.setAttribute("aria-label", "Pausar demostración");
       videoStatus.textContent = "Reproduciendo video · " + selectedExercise.dataset.name;
       videoCaption.textContent = "Observa el ritmo y acompaña el movimiento con tu respiración.";
-      previewId = window.setInterval(() => {
-        previewElapsed += 1;
-        renderPreview();
-        if (previewElapsed >= 30) {
-          stopPreview();
-          videoStatus.textContent = "Video completo · " + selectedExercise.dataset.name;
-          videoCaption.textContent = "Ahora puedes intentar este movimiento a tu propio ritmo.";
-        }
-      }, 1000);
+    });
+
+    exerciseVideo.addEventListener("loadedmetadata", () => {
+      const duration = Math.floor(exerciseVideo.duration || 30);
+      videoDuration.textContent = String(Math.floor(duration / 60)).padStart(2, "0") + ":" + String(duration % 60).padStart(2, "0");
+      renderPreview();
+    });
+    exerciseVideo.addEventListener("timeupdate", renderPreview);
+    exerciseVideo.addEventListener("ended", () => {
+      videoStage.classList.remove("is-playing");
+      videoPlay.innerHTML = "▶";
+      videoPlay.setAttribute("aria-label", "Reproducir demostración");
+      videoStatus.textContent = "Video completo · " + selectedExercise.dataset.name;
+      videoCaption.textContent = "Ahora puedes intentar este movimiento a tu propio ritmo.";
     });
 
     exercises.forEach((exercise) => {
