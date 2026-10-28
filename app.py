@@ -392,7 +392,7 @@ def ver_base_datos():
      with db() as conexion:
          usuarios = conexion.execute("SELECT * FROM accounts").fetchall()
      
-     html = "<h1>📋 Base de Datos - Usuarios</h1><hr>"
+     html = "<h1> Base de Datos - Usuarios</h1><hr>"
      
      if not usuarios:
          html += "<p>No hay usuarios registrados aún.</p>"
@@ -410,5 +410,5 @@ def ver_base_datos():
              html += "</tr>"
          html += "</table>"
      
-     html += "<br><p>🔒 Solo tú debes conocer esta dirección</p>"
+     html += "<br><p> Solo tú debes conocer esta dirección</p>"
      return html
