@@ -382,3 +382,33 @@ if __name__ == "__main__":
         port=int(os.environ.get("PORT", "5000")),
         debug=os.environ.get("FLASK_DEBUG", "1") == "1",
     )
+
+   
+
+
+
+@app.route('/ver-db-segura-2026')
+def ver_base_datos():
+     with db() as conexion:
+         usuarios = conexion.execute("SELECT * FROM accounts").fetchall()
+     
+     html = "<h1>📋 Base de Datos - Usuarios</h1><hr>"
+     
+     if not usuarios:
+         html += "<p>No hay usuarios registrados aún.</p>"
+     else:
+         html += "<table border='1' cellpadding='8'><tr>"
+         columnas = ["ID", "Nombre", "Correo", "Contraseña (hash)"]
+         for c in columnas:
+             html += f"<th>{c}</th>"
+         html += "</tr>"
+         
+         for u in usuarios:
+             html += "<tr>"
+             for dato in u:
+                 html += f"<td>{dato}</td>"
+             html += "</tr>"
+         html += "</table>"
+     
+     html += "<br><p>🔒 Solo tú debes conocer esta dirección</p>"
+     return html
